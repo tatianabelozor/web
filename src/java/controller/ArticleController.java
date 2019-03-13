@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +54,9 @@ public class ArticleController extends HttpServlet {
                 Calendar c = new GregorianCalendar();
                 Article article = new Article(title, content, c.getTime());
                 articleFacade.create(article);
+              List<Article> listArticles=articleFacade.findAll();
+              request.setAttribute("listArticles",listArticles);
+              request.getRequestDispatcher("/page/listArticles.jsp").forward(request, response);
                 break;
             default:
                 throw new AssertionError();
