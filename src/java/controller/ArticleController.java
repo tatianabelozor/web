@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import session.ArticleFacade;
 
 /**
  *
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
     "/newArticle",
     "/createArticle",})
 public class ArticleController extends HttpServlet {
-
+@EJB private ArticleFacade articleFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,7 +51,8 @@ public class ArticleController extends HttpServlet {
                 String content = request.getParameter("content");
                 String author = request.getParameter("author");
                 Calendar c = new GregorianCalendar();
-                Article article=new Article(title, content, c.getTime());
+                Article article = new Article(title, content, c.getTime());
+                articleFacade.create(article);
                 break;
             default:
                 throw new AssertionError();
